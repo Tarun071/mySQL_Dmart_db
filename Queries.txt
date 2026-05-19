@@ -1,0 +1,691 @@
+mysql> -- CREATED A DATABSE NAMED DMART
+mysql> -- USE DATABASE
+mysql> USE DMART
+Database changed
+mysql> -- CATEGORY TABLE --
+mysql> CREATE TABLE categories (
+    ->     category_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     category_name VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> -- INSERT VALUES INTO THE CATEGORY TABLE
+mysql> INSERT INTO categories(category_name)
+    -> VALUES
+    -> ('Grocery'),
+    -> ('Dairy'),
+    -> ('Snacks'),
+    -> ('Beverages'),
+    -> ('Personal Care');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> -- CUSTOMER TABLE --
+mysql> CREATE TABLE customers (
+    ->     customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     customer_name VARCHAR(100),
+    ->     phone VARCHAR(15) UNIQUE,
+    ->     city VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> -- INSERT VALUES INTO CUSTOMER TABLE
+mysql> INSERT INTO customers(customer_name, phone, city)
+    -> VALUES
+    -> ('Rahul Sharma', '9876543210', 'Hyderabad'),
+    -> ('Priya Reddy', '9876543211', 'Vijayawada'),
+    -> ('Arjun Kumar', '9876543212', 'Guntur'),
+    -> ('Sneha Patel', '9876543213', 'Warangal'),
+    -> ('Kiran Rao', '9876543214', 'Visakhapatnam'),
+    -> ('Anjali Mehta', '9876543215', 'Tirupati'),
+    -> ('Ravi Teja', '9876543216', 'Nellore'),
+    -> ('Pooja Singh', '9876543217', 'Kurnool'),
+    -> ('Vikram Das', '9876543218', 'Rajahmundry'),
+    -> ('Neha Jain', '9876543219', 'Kadapa');
+Query OK, 10 rows affected (0.03 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> -- CREATE PRODUCT TABLE --
+mysql> CREATE TABLE products (
+    ->     product_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     product_name VARCHAR(100),
+    ->     category_id INT,
+    ->     price DECIMAL(10,2),
+    ->     stock_quantity INT,
+    -> 
+    ->     FOREIGN KEY (category_id)
+    ->     REFERENCES categories(category_id)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> -- INSERT VALUES INTO PRODUCT TABLE 
+mysql> INSERT INTO products(product_name, category_id, price, stock_quantity)
+    -> VALUES
+    -> ('Rice Bag 25KG', 1, 1200, 50),
+    -> ('Toor Dal 1KG', 1, 180, 100),
+    -> ('Milk 1L', 2, 60, 200),
+    -> ('Curd 500ML', 2, 45, 120),
+    -> ('Lays Chips', 3, 20, 300),
+    -> ('Biscuits Pack', 3, 35, 250),
+    -> ('Coca Cola 2L', 4, 95, 150),
+    -> ('Mango Juice', 4, 110, 100),
+    -> ('Soap', 5, 40, 180),
+    -> ('Shampoo', 5, 220, 90),
+    -> ('Face Wash', 5, 150, 70),
+    -> ('Butter 500G', 2, 250, 60),
+    -> ('Chocolate Box', 3, 175, 80),
+    -> ('Tea Powder 1KG', 1, 450, 55),
+    -> ('Mineral Water', 4, 25, 500);
+Query OK, 15 rows affected (0.03 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> -- CREATE EMPLOYEES TABLE
+mysql> CREATE TABLE employees (
+    ->     employee_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     employee_name VARCHAR(100),
+    ->     role VARCHAR(50),
+    ->     salary DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> -- INSERT VALUES INTO EMPLOYYES TABLE 
+mysql> INSERT INTO employees(employee_name, role, salary)
+    -> VALUES
+    -> ('Suresh Kumar', 'Cashier', 25000),
+    -> ('Lakshmi Devi', 'Store Manager', 50000),
+    -> ('Manoj Verma', 'Sales Executive', 28000),
+    -> ('Keerthi Rao', 'Inventory Manager', 35000),
+    -> ('Ajay Singh', 'Billing Staff', 24000);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> -- CREATE ORDERS TABLE ---
+mysql> CREATE TABLE orders (
+    ->     order_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     customer_id INT,
+    ->     employee_id INT,
+    ->     order_date DATE,
+    ->     total_amount DECIMAL(10,2),
+    -> 
+    ->     FOREIGN KEY (customer_id)
+    ->     REFERENCES customers(customer_id),
+    -> 
+    ->     FOREIGN KEY (employee_id)
+    ->     REFERENCES employees(employee_id)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> -- INSERT VALUES INTO ORDERS TABLE 
+mysql> INSERT INTO orders(customer_id, employee_id, order_date, total_amount)
+    -> VALUES
+    -> (1, 1, '2026-05-01', 1500),
+    -> (2, 2, '2026-05-02', 850),
+    -> (3, 1, '2026-05-03', 2300),
+    -> (4, 3, '2026-05-03', 420),
+    -> (5, 4, '2026-05-04', 1750),
+    -> (6, 5, '2026-05-05', 980),
+    -> (7, 2, '2026-05-06', 760),
+    -> (8, 1, '2026-05-07', 1450),
+    -> (9, 3, '2026-05-08', 2100),
+    -> (10, 4, '2026-05-09', 670);
+Query OK, 10 rows affected (0.03 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> -- CREATE ORDER ITEMS TABLE --
+mysql> INSERT INTO orders(customer_id, employee_id, order_date, total_amount)
+    -> VALUES
+    -> (1, 1, '2026-05-01', 1500),
+    -> (2, 2, '2026-05-02', 850),
+    -> (3, 1, '2026-05-03', 2300),
+    -> (4, 3, '2026-05-03', 420),
+    -> (5, 4, '2026-05-04', 1750),
+    -> (6, 5, '2026-05-05', 980),
+    -> (7, 2, '2026-05-06', 760),
+    -> (8, 1, '2026-05-07', 1450),
+    -> (9, 3, '2026-05-08', 2100),
+    -> ^C
+mysql> CREATE TABLE order_items (
+    ->     order_item_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     order_id INT,
+    ->     product_id INT,
+    ->     quantity INT,
+    ->     subtotal DECIMAL(10,2),
+    -> 
+    ->     FOREIGN KEY (order_id)
+    ->     REFERENCES orders(order_id),
+    -> 
+    ->     FOREIGN KEY (product_id)
+    ->     REFERENCES products(product_id)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> -- INSERT VALUES INTO ORDER ITEMS
+mysql> INSERT INTO order_items(order_id, product_id, quantity, subtotal)
+    -> VALUES
+    -> (1, 1, 1, 1200),
+    -> (1, 5, 5, 100),
+    -> 
+    -> (2, 3, 5, 300),
+    -> (2, 6, 4, 140),
+    -> 
+    -> (3, 1, 1, 1200),
+    -> (3, 14, 2, 900),
+    -> 
+    -> (4, 5, 10, 200),
+    -> (4, 15, 4, 100),
+    -> 
+    -> (5, 10, 3, 660),
+    -> (5, 11, 2, 300),
+    -> 
+    -> (6, 7, 4, 380),
+    -> (6, 13, 2, 350),
+    -> 
+    -> (7, 3, 6, 360),
+    -> (7, 9, 5, 200),
+    -> 
+    -> (8, 12, 2, 500),
+    -> (8, 8, 5, 550),
+    -> 
+    -> (9, 1, 1, 1200),
+    -> (9, 10, 4, 880),
+    -> 
+    -> (10, 6, 5, 175),
+    -> (10, 15, 10, 250);
+Query OK, 20 rows affected (0.01 sec)
+Records: 20  Duplicates: 0  Warnings: 0
+
+mysql> SHOW TABLES;
++-----------------+
+| Tables_in_dmart |
++-----------------+
+| categories      |
+| customers       |
+| employees       |
+| order_items     |
+| orders          |
+| products        |
++-----------------+
+6 rows in set (0.05 sec)
+
+
+mysql> SELECT* FROM CATEGORIES;
++-------------+---------------+
+| category_id | category_name |
++-------------+---------------+
+|           1 | Grocery       |
+|           2 | Dairy         |
+|           3 | Snacks        |
+|           4 | Beverages     |
+|           5 | Personal Care |
++-------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM CUSTOMERS;
++-------------+---------------+------------+---------------+
+| customer_id | customer_name | phone      | city          |
++-------------+---------------+------------+---------------+
+|           1 | Rahul Sharma  | 9876543210 | Hyderabad     |
+|           2 | Priya Reddy   | 9876543211 | Vijayawada    |
+|           3 | Arjun Kumar   | 9876543212 | Guntur        |
+|           4 | Sneha Patel   | 9876543213 | Warangal      |
+|           5 | Kiran Rao     | 9876543214 | Visakhapatnam |
+|           6 | Anjali Mehta  | 9876543215 | Tirupati      |
+|           7 | Ravi Teja     | 9876543216 | Nellore       |
+|           8 | Pooja Singh   | 9876543217 | Kurnool       |
+|           9 | Vikram Das    | 9876543218 | Rajahmundry   |
+|          10 | Neha Jain     | 9876543219 | Kadapa        |
++-------------+---------------+------------+---------------+
+10 rows in set (0.03 sec)
+
+mysql> SELECT * FROM EMPLOYEES;
++-------------+---------------+-------------------+----------+
+| employee_id | employee_name | role              | salary   |
++-------------+---------------+-------------------+----------+
+|           1 | Suresh Kumar  | Cashier           | 25000.00 |
+|           2 | Lakshmi Devi  | Store Manager     | 50000.00 |
+|           3 | Manoj Verma   | Sales Executive   | 28000.00 |
+|           4 | Keerthi Rao   | Inventory Manager | 35000.00 |
+|           5 | Ajay Singh    | Billing Staff     | 24000.00 |
++-------------+---------------+-------------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT* FROM ORDER_ITEMS;
++---------------+----------+------------+----------+----------+
+| order_item_id | order_id | product_id | quantity | subtotal |
++---------------+----------+------------+----------+----------+
+|             1 |        1 |          1 |        1 |  1200.00 |
+|             2 |        1 |          5 |        5 |   100.00 |
+|             3 |        2 |          3 |        5 |   300.00 |
+|             4 |        2 |          6 |        4 |   140.00 |
+|             5 |        3 |          1 |        1 |  1200.00 |
+|             6 |        3 |         14 |        2 |   900.00 |
+|             7 |        4 |          5 |       10 |   200.00 |
+|             8 |        4 |         15 |        4 |   100.00 |
+|             9 |        5 |         10 |        3 |   660.00 |
+|            10 |        5 |         11 |        2 |   300.00 |
+|            11 |        6 |          7 |        4 |   380.00 |
+|            12 |        6 |         13 |        2 |   350.00 |
+|            13 |        7 |          3 |        6 |   360.00 |
+|            14 |        7 |          9 |        5 |   200.00 |
+|            15 |        8 |         12 |        2 |   500.00 |
+|            16 |        8 |          8 |        5 |   550.00 |
+|            17 |        9 |          1 |        1 |  1200.00 |
+|            18 |        9 |         10 |        4 |   880.00 |
+|            19 |       10 |          6 |        5 |   175.00 |
+|            20 |       10 |         15 |       10 |   250.00 |
++---------------+----------+------------+----------+----------+
+20 rows in set (0.00 sec)
+
+mysql> SELECT*FROM ORDERS;
++----------+-------------+-------------+------------+--------------+
+| order_id | customer_id | employee_id | order_date | total_amount |
++----------+-------------+-------------+------------+--------------+
+|        1 |           1 |           1 | 2026-05-01 |      1500.00 |
+|        2 |           2 |           2 | 2026-05-02 |       850.00 |
+|        3 |           3 |           1 | 2026-05-03 |      2300.00 |
+|        4 |           4 |           3 | 2026-05-03 |       420.00 |
+|        5 |           5 |           4 | 2026-05-04 |      1750.00 |
+|        6 |           6 |           5 | 2026-05-05 |       980.00 |
+|        7 |           7 |           2 | 2026-05-06 |       760.00 |
+|        8 |           8 |           1 | 2026-05-07 |      1450.00 |
+|        9 |           9 |           3 | 2026-05-08 |      2100.00 |
+|       10 |          10 |           4 | 2026-05-09 |       670.00 |
++----------+-------------+-------------+------------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM PRODUCTS;
++------------+----------------+-------------+---------+----------------+
+| product_id | product_name   | category_id | price   | stock_quantity |
++------------+----------------+-------------+---------+----------------+
+|          1 | Rice Bag 25KG  |           1 | 1200.00 |             50 |
+|          2 | Toor Dal 1KG   |           1 |  180.00 |            100 |
+|          3 | Milk 1L        |           2 |   60.00 |            200 |
+|          4 | Curd 500ML     |           2 |   45.00 |            120 |
+|          5 | Lays Chips     |           3 |   20.00 |            300 |
+|          6 | Biscuits Pack  |           3 |   35.00 |            250 |
+|          7 | Coca Cola 2L   |           4 |   95.00 |            150 |
+|          8 | Mango Juice    |           4 |  110.00 |            100 |
+|          9 | Soap           |           5 |   40.00 |            180 |
+|         10 | Shampoo        |           5 |  220.00 |             90 |
+|         11 | Face Wash      |           5 |  150.00 |             70 |
+|         12 | Butter 500G    |           2 |  250.00 |             60 |
+|         13 | Chocolate Box  |           3 |  175.00 |             80 |
+|         14 | Tea Powder 1KG |           1 |  450.00 |             55 |
+|         15 | Mineral Water  |           4 |   25.00 |            500 |
++------------+----------------+-------------+---------+----------------+
+15 rows in set (0.00 sec)
+
+mysql> -- SECTION 1 --
+mysql> SELECT EMPLOYEE_NAME , SALARY+1000 AS INCREASES_SALARY FROM EMPLOYEES ;
++---------------+------------------+
+| EMPLOYEE_NAME | INCREASES_SALARY |
++---------------+------------------+
+| Suresh Kumar  |         26000.00 |
+| Lakshmi Devi  |         51000.00 |
+| Manoj Verma   |         29000.00 |
+| Keerthi Rao   |         36000.00 |
+| Ajay Singh    |         25000.00 |
++---------------+------------------+
+5 rows in set (0.03 sec)
+
+mysql> -- 2. PRINT NAMES OF EVEN ORDER ID OF EMPLOYEES
+
++-------------+---------------+
+| EMPLOYEE_ID | EMPLOYEE_NAME |
++-------------+---------------+
+|           2 | Lakshmi Devi  |
+|           4 | Keerthi Rao   |
++-------------+---------------+
+2 rows in set (0.03 sec)
+
+mysql> -- DISPLAY THE SALARIES > THAN 25000
+mysql> SELECT EMPLOYEE_NAME ,SALARY FROM EMPLOYEES WHERE SALARY>25000;
++---------------+----------+
+| EMPLOYEE_NAME | SALARY   |
++---------------+----------+
+| Lakshmi Devi  | 50000.00 |
+| Manoj Verma   | 28000.00 |
+| Keerthi Rao   | 35000.00 |
++---------------+----------+
+3 rows in set (0.03 sec)
+
+mysql> SELECT PRODUCT_NAME ,STOCK_QUANTITY FROM PRODUCTS WHERE STOCK_QUATITY<50;
+ERROR 1054 (42S22): Unknown column 'STOCK_QUATITY' in 'where clause'
+mysql> SELECT PRODUCT_NAME ,STOCK_QUANTITY FROM PRODUCTS WHERE STOCK_QUANTITY<50;
+Empty set (0.00 sec)
+
+mysql> SELECT PRODUCT_NAME ,STOCK_QUANTITY FROM PRODUCTS WHERE STOCK_QUANTITY<100;
++----------------+----------------+
+| PRODUCT_NAME   | STOCK_QUANTITY |
++----------------+----------------+
+| Rice Bag 25KG  |             50 |
+| Shampoo        |             90 |
+| Face Wash      |             70 |
+| Butter 500G    |             60 |
+| Chocolate Box  |             80 |
+| Tea Powder 1KG |             55 |
++----------------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> -- 5.DISPLAY THE PRODUCTS WITH CATEGORY 5 AND PRICE LESS THAN 150
+mysql> SELECT CATEGORY_ID , PRODUCT_NAME FROM PRODUCTS WHERE CATEGORY_ID=5;
++-------------+--------------+
+| CATEGORY_ID | PRODUCT_NAME |
++-------------+--------------+
+|           5 | Soap         |
+|           5 | Shampoo      |
+|           5 | Face Wash    |
++-------------+--------------+
+3 rows in set (0.03 sec)
+
+mysql> -- 6.DISPLAY THE PRODUCTS QUANTITY BETWENN 100 AND 260
+mysql> SELECT PRODUCT_NAME ,STOCK_QUANTITY FROM EMPLOYEES BETWEEN 100 AND 260;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'BETWEEN 100 AND 260' at line 1
+mysql> SELECT PRODUCT_NAME ,STOCK_QUANTITY FROM EMPLOYEES WHERE STOCK_QUANTITY BETWEEN 100 AND 260;
+ERROR 1054 (42S22): Unknown column 'PRODUCT_NAME' in 'field list'
+mysql> SELECT PRODUCT_NAME ,STOCK_QUANTITY FROM PRODUCTS WHERE STOCK_QUANTITY BETWEEN 100 AND 260;
++---------------+----------------+
+| PRODUCT_NAME  | STOCK_QUANTITY |
++---------------+----------------+
+| Toor Dal 1KG  |            100 |
+| Milk 1L       |            200 |
+| Curd 500ML    |            120 |
+| Biscuits Pack |            250 |
+| Coca Cola 2L  |            150 |
+| Mango Juice   |            100 |
+| Soap          |            180 |
++---------------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> -- 8. PRODUCTS NAMES STARTING WITH LETTER M
+mysql> SELECT PRODUCT_ID FROM PRODUCTS WHERE PRODUCT_NAME LIKE P%;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%' at line 1
+mysql> SELECT PRODUCT_NAME FROM PRODUCTS WHERE PRODUCT_NAME LIKE 'P%';
+Empty set (0.02 sec)
+
+mysql> SELECT PRODUCT_NAME FROM PRODUCTS WHERE PRODUCT_NAME LIKE 'M%';
++---------------+
+| PRODUCT_NAME  |
++---------------+
+| Milk 1L       |
+| Mango Juice   |
+| Mineral Water |
++---------------+
+3 rows in set (0.00 sec)
+
+mysql> -- SECTION 2 --
+mysql> -- 1. COUNT OF PRODUCTS WITH ID 5
+mysql> SELECT COUNT(*) FROM products WHERE product_id = 5;
++----------+
+| COUNT(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> SELECT COUNT(*) FROM PRODUCTS WHERE CATEGORY=5;
+ERROR 1054 (42S22): Unknown column 'CATEGORY' in 'where clause'
+mysql> SELECT COUNT(*) FROM PRODUCTS WHERE CATEGORY_ID=5;
++----------+
+| COUNT(*) |
++----------+
+|        3 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> -- 2. SUM OF STOCK IN PRODUCTS TABLE
+mysql> SELECT SUM(STOCK_QUANTITY) FROM PRODUCTS;
++---------------------+
+| SUM(STOCK_QUANTITY) |
++---------------------+
+|                2305 |
++---------------------+
+1 row in set (0.04 sec)
+
+mysql> -- 3. AVERAGE PRICE OF ALL PRODUCTS IN DMART
+mysql> SELECT AVG(PRICE) FROM PRODUCTS;
++------------+
+| AVG(PRICE) |
++------------+
+| 203.666667 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> -- 4. NAMES OF PRODUCTS ACCORDING TO PRICE IN DESCENDING ORDER
+mysql> SELECT PRODUCT_NAME, PRICE FROM PRODUCTS ORDER BY PRICE DESC;
++----------------+---------+
+| PRODUCT_NAME   | PRICE   |
++----------------+---------+
+| Rice Bag 25KG  | 1200.00 |
+| Tea Powder 1KG |  450.00 |
+| Butter 500G    |  250.00 |
+| Shampoo        |  220.00 |
+| Toor Dal 1KG   |  180.00 |
+| Chocolate Box  |  175.00 |
+| Face Wash      |  150.00 |
+| Mango Juice    |  110.00 |
+| Coca Cola 2L   |   95.00 |
+| Milk 1L        |   60.00 |
+| Curd 500ML     |   45.00 |
+| Soap           |   40.00 |
+| Biscuits Pack  |   35.00 |
+| Mineral Water  |   25.00 |
+| Lays Chips     |   20.00 |
++----------------+---------+
+15 rows in set (0.00 sec)
+
+mysql> -- 5. PRODUCT NAMES WITH SAME CATEGORY
+mysql> SELECT CATEGORY_ID, GROUP_CONCAT(PRODUCT_NAME) AS PRODUCTS FROM PRODUCTS GROUP BY CATEGORY_ID;
++-------------+-------------------------------------------+
+| CATEGORY_ID | PRODUCTS                                  |
++-------------+-------------------------------------------+
+|           1 | Rice Bag 25KG,Toor Dal 1KG,Tea Powder 1KG |
+|           2 | Milk 1L,Curd 500ML,Butter 500G            |
+|           3 | Lays Chips,Biscuits Pack,Chocolate Box    |
+|           4 | Coca Cola 2L,Mango Juice,Mineral Water    |
+|           5 | Soap,Shampoo,Face Wash                    |
++-------------+-------------------------------------------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT CATEGORY_ID , COUNT(PRODUCTS) AS P-COUNT FROM PRODUCTS GROUP BY CATEGORY_ID;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-COUNT FROM PRODUCTS GROUP BY CATEGORY_ID' at line 1
+mysql> SELECT CATEGORY_ID , COUNT(PRODUCT_NAME) AS P-COUNT FROM PRODUCTS GROUP BY CATEGORY_ID;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-COUNT FROM PRODUCTS GROUP BY CATEGORY_ID' at line 1
+mysql> SELECT CATEGORY_ID , COUNT(PRODUCT_NAME) AS P_COUNT FROM PRODUCTS GROUP BY CATEGORY_ID;
++-------------+---------+
+| CATEGORY_ID | P_COUNT |
++-------------+---------+
+|           1 |       3 |
+|           2 |       3 |
+|           3 |       3 |
+|           4 |       3 |
+|           5 |       3 |
++-------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> -- 6. CATEGORIES WITH AVERAGE PRICE GREATER THAN 100
+mysql> SELECT CATEGORY_ID, AVG(PRICE) AS AVG_PRICE FROM PRODUCTS GROUP BY CATEGORY_ID HAVING AVG(PRICE) > 100;
++-------------+------------+
+| CATEGORY_ID | AVG_PRICE  |
++-------------+------------+
+|           1 | 610.000000 |
+|           2 | 118.333333 |
+|           5 | 136.666667 |
++-------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> -- SECTION 3 --
+mysql> SELECT \]4+[-0POLKI99L0O;-P'=[
+ERROR: 
+Unknown command '\]'.
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '\]4+[-0POLKI99L0O' at line 1
+    '> ^C
+mysql> 
+mysql> -- 1. DISPLAY THE ORDER ID, CUSTOMER NAME, AND TOTAL BILL AMOUNT OF ALL PURCHASES MADE IN DMART.
+mysql> SELECT O.ORDER_ID, C.CUSTOMER_NAME, O.TOTAL_AMOUNT FROM ORDERS O JOIN CUSTOMERS C ON O.CUSTOMER_ID = C.CUSTOMER_ID;
++----------+---------------+--------------+
+| ORDER_ID | CUSTOMER_NAME | TOTAL_AMOUNT |
++----------+---------------+--------------+
+|        1 | Rahul Sharma  |      1500.00 |
+|        2 | Priya Reddy   |       850.00 |
+|        3 | Arjun Kumar   |      2300.00 |
+|        4 | Sneha Patel   |       420.00 |
+|        5 | Kiran Rao     |      1750.00 |
+|        6 | Anjali Mehta  |       980.00 |
+|        7 | Ravi Teja     |       760.00 |
+|        8 | Pooja Singh   |      1450.00 |
+|        9 | Vikram Das    |      2100.00 |
+|       10 | Neha Jain     |       670.00 |
++----------+---------------+--------------+
+10 rows in set (0.02 sec)
+
+mysql> -- 2. DISPLAY ALL CUSTOMERS ALONG WITH THEIR PURCHASE DETAILS, INCLUDING CUSTOMERS WHO HAVE NOT PLACED ANY ORDERS.
+mysql> SELECT C.CUSTOMER_NAME, O.ORDER_ID, O.TOTAL_AMOUNT FROM CUSTOMERS C LEFT JOIN ORDERS O ON C.CUSTOMER_ID = O.CUSTOMER_ID;
++---------------+----------+--------------+
+| CUSTOMER_NAME | ORDER_ID | TOTAL_AMOUNT |
++---------------+----------+--------------+
+| Rahul Sharma  |        1 |      1500.00 |
+| Priya Reddy   |        2 |       850.00 |
+| Arjun Kumar   |        3 |      2300.00 |
+| Sneha Patel   |        4 |       420.00 |
+| Kiran Rao     |        5 |      1750.00 |
+| Anjali Mehta  |        6 |       980.00 |
+| Ravi Teja     |        7 |       760.00 |
+| Pooja Singh   |        8 |      1450.00 |
+| Vikram Das    |        9 |      2100.00 |
+| Neha Jain     |       10 |       670.00 |
++---------------+----------+--------------+
+10 rows in set (0.03 sec)
+
+mysql> -- 3. DISPLAY THE NAMES OF PRODUCTS THAT BELONG TO THE SAME CATEGORY.
+mysql> SELECT A.PRODUCT_NAME, B.PRODUCT_NAME, A.CATEGORY_ID FROM PRODUCTS A JOIN PRODUCTS B ON A.CATEGORY_ID = B.CATEGORY_ID AND A.PRODUCT_ID != B.PRODUCT_ID;
++----------------+----------------+-------------+
+| PRODUCT_NAME   | PRODUCT_NAME   | CATEGORY_ID |
++----------------+----------------+-------------+
+| Rice Bag 25KG  | Toor Dal 1KG   |           1 |
+| Rice Bag 25KG  | Tea Powder 1KG |           1 |
+| Toor Dal 1KG   | Rice Bag 25KG  |           1 |
+| Toor Dal 1KG   | Tea Powder 1KG |           1 |
+| Milk 1L        | Curd 500ML     |           2 |
+| Milk 1L        | Butter 500G    |           2 |
+| Curd 500ML     | Milk 1L        |           2 |
+| Curd 500ML     | Butter 500G    |           2 |
+| Lays Chips     | Biscuits Pack  |           3 |
+| Lays Chips     | Chocolate Box  |           3 |
+| Biscuits Pack  | Lays Chips     |           3 |
+| Biscuits Pack  | Chocolate Box  |           3 |
+| Coca Cola 2L   | Mango Juice    |           4 |
+| Coca Cola 2L   | Mineral Water  |           4 |
+| Mango Juice    | Coca Cola 2L   |           4 |
+| Mango Juice    | Mineral Water  |           4 |
+| Soap           | Shampoo        |           5 |
+| Soap           | Face Wash      |           5 |
+| Shampoo        | Soap           |           5 |
+| Shampoo        | Face Wash      |           5 |
+| Face Wash      | Soap           |           5 |
+| Face Wash      | Shampoo        |           5 |
+| Butter 500G    | Milk 1L        |           2 |
+| Butter 500G    | Curd 500ML     |           2 |
+| Chocolate Box  | Lays Chips     |           3 |
+| Chocolate Box  | Biscuits Pack  |           3 |
+| Tea Powder 1KG | Rice Bag 25KG  |           1 |
+| Tea Powder 1KG | Toor Dal 1KG   |           1 |
+| Mineral Water  | Coca Cola 2L   |           4 |
+| Mineral Water  | Mango Juice    |           4 |
++----------------+----------------+-------------+
+30 rows in set (0.04 sec)
+
+mysql> -- 4. DISPLAY ALL POSSIBLE CUSTOMER AND EMPLOYEE COMBINATIONS AVAILABLE IN THE STORE.
+mysql> SELECT C.CUSTOMER_NAME, E.EMPLOYEE_NAME FROM CUSTOMERS C CROSS JOIN EMPLOYEES E;
++---------------+---------------+
+| CUSTOMER_NAME | EMPLOYEE_NAME |
++---------------+---------------+
+| Rahul Sharma  | Ajay Singh    |
+| Rahul Sharma  | Keerthi Rao   |
+| Rahul Sharma  | Manoj Verma   |
+| Rahul Sharma  | Lakshmi Devi  |
+| Rahul Sharma  | Suresh Kumar  |
+| Priya Reddy   | Ajay Singh    |
+| Priya Reddy   | Keerthi Rao   |
+| Priya Reddy   | Manoj Verma   |
+| Priya Reddy   | Lakshmi Devi  |
+| Priya Reddy   | Suresh Kumar  |
+| Arjun Kumar   | Ajay Singh    |
+| Arjun Kumar   | Keerthi Rao   |
+| Arjun Kumar   | Manoj Verma   |
+| Arjun Kumar   | Lakshmi Devi  |
+| Arjun Kumar   | Suresh Kumar  |
+| Sneha Patel   | Ajay Singh    |
+| Sneha Patel   | Keerthi Rao   |
+| Sneha Patel   | Manoj Verma   |
+| Sneha Patel   | Lakshmi Devi  |
+| Sneha Patel   | Suresh Kumar  |
+| Kiran Rao     | Ajay Singh    |
+| Kiran Rao     | Keerthi Rao   |
+| Kiran Rao     | Manoj Verma   |
+| Kiran Rao     | Lakshmi Devi  |
+| Kiran Rao     | Suresh Kumar  |
+| Anjali Mehta  | Ajay Singh    |
+| Anjali Mehta  | Keerthi Rao   |
+| Anjali Mehta  | Manoj Verma   |
+| Anjali Mehta  | Lakshmi Devi  |
+| Anjali Mehta  | Suresh Kumar  |
+| Ravi Teja     | Ajay Singh    |
+| Ravi Teja     | Keerthi Rao   |
+| Ravi Teja     | Manoj Verma   |
+| Ravi Teja     | Lakshmi Devi  |
+| Ravi Teja     | Suresh Kumar  |
+| Pooja Singh   | Ajay Singh    |
+| Pooja Singh   | Keerthi Rao   |
+| Pooja Singh   | Manoj Verma   |
+| Pooja Singh   | Lakshmi Devi  |
+| Pooja Singh   | Suresh Kumar  |
+| Vikram Das    | Ajay Singh    |
+| Vikram Das    | Keerthi Rao   |
+| Vikram Das    | Manoj Verma   |
+| Vikram Das    | Lakshmi Devi  |
+| Vikram Das    | Suresh Kumar  |
+| Neha Jain     | Ajay Singh    |
+| Neha Jain     | Keerthi Rao   |
+| Neha Jain     | Manoj Verma   |
+| Neha Jain     | Lakshmi Devi  |
+| Neha Jain     | Suresh Kumar  |
++---------------+---------------+
+50 rows in set (0.03 sec)
+
+mysql> -- 5. DISPLAY THE NAMES OF PRODUCTS WHOSE PRICE IS GREATER THAN THE AVERAGE PRICE OF ALL PRODUCTS IN DMART.
+mysql> SELECT PRODUCT_NAME, PRICE FROM PRODUCTS WHERE PRICE > (SELECT AVG(PRICE) FROM PRODUCTS);
++----------------+---------+
+| PRODUCT_NAME   | PRICE   |
++----------------+---------+
+| Rice Bag 25KG  | 1200.00 |
+| Shampoo        |  220.00 |
+| Butter 500G    |  250.00 |
+| Tea Powder 1KG |  450.00 |
++----------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> -- 6. DISPLAY THE NAMES OF CUSTOMERS WHOSE PURCHASE BILL AMOUNT IS GREATER THAN 1000.
+mysql> SELECT CUSTOMER_NAME FROM CUSTOMERS WHERE CUSTOMER_ID IN (SELECT CUSTOMER_ID FROM ORDERS WHERE TOTAL_AMOUNT > 1000);
++---------------+
+| CUSTOMER_NAME |
++---------------+
+| Rahul Sharma  |
+| Arjun Kumar   |
+| Kiran Rao     |
+| Pooja Singh   |
+| Vikram Das    |
++---------------+
+5 rows in set (0.03 sec)
+
+mysql> -- 7. DISPLAY THE PRODUCT NAMES THAT WERE SOLD IN THE HIGHEST QUANTITY.
+mysql> SELECT PRODUCT_NAME FROM PRODUCTS WHERE PRODUCT_ID IN (SELECT PRODUCT_ID FROM ORDER_ITEMS WHERE QUANTITY = (SELECT MAX(QUANTITY) FROM ORDER_ITEMS));
++---------------+
+| PRODUCT_NAME  |
++---------------+
+| Lays Chips    |
+| Mineral Water |
++---------------+
+2 rows in set (0.03 sec)
+
+mysql> 
